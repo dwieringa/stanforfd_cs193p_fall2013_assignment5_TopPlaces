@@ -15,7 +15,6 @@
 		55D578C518F72CF60022CD99 /* TopPlacesAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578C418F72CF60022CD99 /* TopPlacesAppDelegate.m */; };
 		55D578C818F72CF60022CD99 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55D578C618F72CF60022CD99 /* Main_iPhone.storyboard */; };
 		55D578CB18F72CF60022CD99 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55D578C918F72CF60022CD99 /* Main_iPad.storyboard */; };
-		55D578CE18F72CF60022CD99 /* TopPlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578CD18F72CF60022CD99 /* TopPlacesViewController.m */; };
 		55D578D018F72CF60022CD99 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D578CF18F72CF60022CD99 /* Images.xcassets */; };
 		55D578D718F72CF60022CD99 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D578D618F72CF60022CD99 /* XCTest.framework */; };
 		55D578D818F72CF60022CD99 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55D578B418F72CF60022CD99 /* Foundation.framework */; };
@@ -50,8 +49,6 @@
 		55D578C418F72CF60022CD99 /* TopPlacesAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPlacesAppDelegate.m; sourceTree = "<group>"; };
 		55D578C718F72CF60022CD99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
 		55D578CA18F72CF60022CD99 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
-		55D578CC18F72CF60022CD99 /* TopPlacesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPlacesViewController.h; sourceTree = "<group>"; };
-		55D578CD18F72CF60022CD99 /* TopPlacesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPlacesViewController.m; sourceTree = "<group>"; };
 		55D578CF18F72CF60022CD99 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		55D578D518F72CF60022CD99 /* TopPlacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TopPlacesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55D578D618F72CF60022CD99 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -130,8 +127,6 @@
 				55D578F418F730E20022CD99 /* TopFlickrPlacesTVC.h */,
 				55D578F518F730E20022CD99 /* TopFlickrPlacesTVC.m */,
 				55D578C918F72CF60022CD99 /* Main_iPad.storyboard */,
-				55D578CC18F72CF60022CD99 /* TopPlacesViewController.h */,
-				55D578CD18F72CF60022CD99 /* TopPlacesViewController.m */,
 				55D578EC18F72D460022CD99 /* Flickr Fetcher */,
 				55D578CF18F72CF60022CD99 /* Images.xcassets */,
 				55D578BB18F72CF60022CD99 /* Supporting Files */,
@@ -279,7 +274,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55D578CE18F72CF60022CD99 /* TopPlacesViewController.m in Sources */,
 				55D578C518F72CF60022CD99 /* TopPlacesAppDelegate.m in Sources */,
 				55D578F618F730E20022CD99 /* TopFlickrPlacesTVC.m in Sources */,
 				55D578F018F72D470022CD99 /* FlickrFetcher.m in Sources */,
