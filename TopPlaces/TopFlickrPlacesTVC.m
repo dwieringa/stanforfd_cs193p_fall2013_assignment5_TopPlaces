@@ -27,10 +27,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fetchPhotos];
+    [self fetchPlaces];
 }
 
-- (void)fetchPhotos
+- (void)fetchPlaces
 {
     NSURL *url = [FlickrFetcher URLforTopPlaces];
     NSData *jsonResult = [NSData dataWithContentsOfURL:url];
@@ -38,7 +38,8 @@
                                                                         options:0
                                                                           error:NULL];
     NSLog(@"Flickr results = %@", propertyListResults);
-    self.places = nil;
+    NSArray *places = [propertyListResults valueForKeyPath:FLICKR_RESULTS_PLACES];
+    self.places = places;
 }
 
 - (void)didReceiveMemoryWarning
