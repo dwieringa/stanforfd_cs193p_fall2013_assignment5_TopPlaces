@@ -38,8 +38,40 @@
                                                                         options:0
                                                                           error:NULL];
     NSLog(@"Flickr results = %@", propertyListResults);
+    
     NSArray *places = [propertyListResults valueForKeyPath:FLICKR_RESULTS_PLACES];
-    self.places = places;
+    
+    NSMutableArray *countries = [[NSMutableArray alloc] init];
+    NSMutableDictionary *placesByCountry = [[NSMutableDictionary alloc] init];
+    for (NSDictionary *placeX in places) {
+        NSMutableDictionary *place = [placeX mutableCopy];
+        NSArray *locationParts = [[place valueForKeyPath:FLICKR_PLACE_NAME] componentsSeparatedByString:@","];
+        NSString *country = locationParts[locationParts.count-1];
+        NSString *middlePart = @"";
+        if (locationParts.count == 3) {
+            middlePart = locationParts[1];
+        }
+        place[@"title"] = locationParts[0];
+        place[@"subtitle"] = middlePart;
+        NSMutableArray *placesInCountry = [placesByCountry objectForKey:country];
+        if (placesInCountry == nil) {
+            [countries addObject:country];
+            placesInCountry = [[NSMutableArray alloc] init];
+        }
+        [placesInCountry addObject:place];
+        placesByCountry[country] = placesInCountry;
+    }
+    self.countries = [countries sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+
+    //sort places within countries
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"title"  ascending:YES];
+    for (NSString *country in countries) {
+        //placesByCountry[country] = [ sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray *places = placesByCountry[country];
+        placesByCountry[country] = [places sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+        //recent = [stories copy];
+    }
+    self.placesByCountry = placesByCountry;
 }
 
 - (void)didReceiveMemoryWarning

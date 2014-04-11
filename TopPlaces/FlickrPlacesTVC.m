@@ -15,9 +15,15 @@
 
 @implementation FlickrPlacesTVC
 
-- (void)setPlaces:(NSArray *)places
+- (void)setPlacesByCountry:(NSDictionary *)placesByCountry
 {
-    _places = places;
+    _placesByCountry = placesByCountry;
+    [self.tableView reloadData];
+}
+
+- (void)setCountries:(NSArray *)countries
+{
+    _countries = countries;
     [self.tableView reloadData];
 }
 
@@ -26,13 +32,15 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return self.placesByCountry.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.places.count;
+    NSString *country = self.countries[section];
+    NSArray *placesInCountry = self.placesByCountry[country];
+    return placesInCountry.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -42,11 +50,17 @@
                                                             forIndexPath:indexPath];
     
     // Configure the cell...
-    NSDictionary *place = self.places[indexPath.row];
-    cell.textLabel.text = [place valueForKeyPath:FLICKR_PLACE_NAME];
-    cell.detailTextLabel.text = [place valueForKeyPath:FLICKR_PHOTO_TITLE];
-    
+    NSString *country = self.countries[indexPath.section];
+    NSArray *placesInCountry = self.placesByCountry[country];
+    NSDictionary *place = placesInCountry[indexPath.row];
+    cell.textLabel.text = [place valueForKeyPath:@"title"];
+    cell.detailTextLabel.text = [place valueForKeyPath:@"subtitle"];
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return self.countries[section];
 }
 
 /*
