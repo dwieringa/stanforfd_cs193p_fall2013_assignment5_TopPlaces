@@ -127,6 +127,10 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hY6-DF-yIG">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="hwu-ft-CLw" appends="YES" id="Lgb-LT-yMe"/>
+                                </connections>
                             </scrollView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="IwG-7m-ZhS">
                                 <rect key="frame" x="142" y="266" width="37" height="37"/>
@@ -151,6 +155,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pau-Nc-7yD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="hwu-ft-CLw">
+                    <connections>
+                        <action selector="zoomTap:" destination="bew-Vi-gF2" id="4Je-ux-Bs9"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2479" y="47"/>
         </scene>

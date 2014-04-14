@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UIImage *image;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic) BOOL userDidZoom;
 @end
 
 @implementation ImageViewController
@@ -25,6 +26,13 @@
 {
     [super viewDidLoad];
     [self.scrollView addSubview:self.imageView];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    if (self.image && !self.userDidZoom) {
+        [self setZoomScaleToFillScreen];
+    }
 }
 
 #pragma mark - Properties
@@ -50,12 +58,21 @@
 {
     self.imageView.image = image; // does not change the frame of the UIImageView
     [self.imageView sizeToFit];   // update the frame of the UIImageView
-  //  self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     // self.scrollView could be nil on the next line if outlet-setting has not happened yet
     self.scrollView.contentSize = self.image ? self.image.size : CGSizeZero;
+    [self setZoomScaleToFillScreen];
 
     [self.spinner stopAnimating];
+    self.userDidZoom = NO;
+}
+
+- (void)setZoomScaleToFillScreen
+{
+    double wScale = self.scrollView.bounds.size.width / self.imageView.image.size.width;
+    double hScale = (self.scrollView.bounds.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) / self.imageView.image.size.height;
+    if (wScale > hScale) self.scrollView.zoomScale = wScale;
+    else self.scrollView.zoomScale = hScale;
 }
 
 - (void)setScrollView:(UIScrollView *)scrollView
@@ -66,18 +83,25 @@
     _scrollView.minimumZoomScale = 0.2;
     _scrollView.maximumZoomScale = 2.0;
     _scrollView.delegate = self;
-
+    
     // next line is necessary in case self.image gets set before self.scrollView does
     // for example, prepareForSegue:sender: is called before outlet-setting phase
     self.scrollView.contentSize = self.image ? self.image.size : CGSizeZero;
 }
 
+- (IBAction)zoomTap:(id)sender {
+    if (self.image && !self.userDidZoom) {
+        CGRect zoomRect = CGRectMake(0, 0, self.image.size.width, self.image.size.height);
+        [self.scrollView zoomToRect:zoomRect animated:NO];
+    }
+}
 #pragma mark - UIScrollViewDelegate
 
 // mandatory zooming method in UIScrollViewDelegate protocol
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
+    self.userDidZoom = YES;
     return self.imageView;
 }
 
