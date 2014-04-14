@@ -9,6 +9,8 @@
 #import "FlickrPhotosTVC.h"
 #import "FlickrFetcher.h"
 #import "ImageViewController.h"
+#import "RecentPhotos.h"
+
 
 @interface FlickrPhotosTVC ()
 
@@ -97,6 +99,7 @@
 {
     ivc.imageURL = [FlickrFetcher URLforPhoto:photo format:FlickrPhotoFormatLarge];
     ivc.title = [photo valueForKeyPath:FLICKR_PHOTO_TITLE];
+    [RecentPhotos addPhoto:photo];
 }
 
 // In a story board-based application, you will often want to do a little preparation before navigation
