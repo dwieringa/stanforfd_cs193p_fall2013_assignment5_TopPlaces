@@ -8,6 +8,7 @@
 
 #import "TopFlickrPlacesTVC.h"
 #import "FlickrFetcher.h"
+#import "PlaceFlickrPhotosTVC.h"
 
 @interface TopFlickrPlacesTVC ()
 
@@ -30,48 +31,22 @@
     [self fetchPlaces];
 }
 
-- (void)fetchPlaces
+- (IBAction)fetchPlaces
 {
+    [self.refreshControl beginRefreshing]; // start the spinner
     NSURL *url = [FlickrFetcher URLforTopPlaces];
-    NSData *jsonResult = [NSData dataWithContentsOfURL:url];
-    NSDictionary *propertyListResults = [NSJSONSerialization JSONObjectWithData:jsonResult
-                                                                        options:0
-                                                                          error:NULL];
-    NSLog(@"Flickr results = %@", propertyListResults);
-    
-    NSArray *places = [propertyListResults valueForKeyPath:FLICKR_RESULTS_PLACES];
-    
-    NSMutableArray *countries = [[NSMutableArray alloc] init];
-    NSMutableDictionary *placesByCountry = [[NSMutableDictionary alloc] init];
-    for (NSDictionary *placeX in places) {
-        NSMutableDictionary *place = [placeX mutableCopy];
-        NSArray *locationParts = [[place valueForKeyPath:FLICKR_PLACE_NAME] componentsSeparatedByString:@","];
-        NSString *country = locationParts[locationParts.count-1];
-        NSString *middlePart = @"";
-        if (locationParts.count == 3) {
-            middlePart = locationParts[1];
-        }
-        place[@"title"] = locationParts[0];
-        place[@"subtitle"] = middlePart;
-        NSMutableArray *placesInCountry = [placesByCountry objectForKey:country];
-        if (placesInCountry == nil) {
-            [countries addObject:country];
-            placesInCountry = [[NSMutableArray alloc] init];
-        }
-        [placesInCountry addObject:place];
-        placesByCountry[country] = placesInCountry;
-    }
-    self.countries = [countries sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-
-    //sort places within countries
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"title"  ascending:YES];
-    for (NSString *country in countries) {
-        //placesByCountry[country] = [ sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-        NSArray *places = placesByCountry[country];
-        placesByCountry[country] = [places sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-        //recent = [stories copy];
-    }
-    self.placesByCountry = placesByCountry;
+    dispatch_queue_t fetchQ = dispatch_queue_create("flickr fetcher", NULL);
+    dispatch_async(fetchQ, ^{
+        NSData *jsonResult = [NSData dataWithContentsOfURL:url];
+        NSDictionary *propertyListResults = [NSJSONSerialization JSONObjectWithData:jsonResult
+                                                                            options:0
+                                                                              error:NULL];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Flickr results = %@", propertyListResults);
+            [self.refreshControl endRefreshing]; // stop the spinner
+            self.places = [propertyListResults valueForKeyPath:FLICKR_RESULTS_PLACES];
+        });
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,15 +55,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
+
+- (void)preparePlaceTableViewController:(PlaceFlickrPhotosTVC *)pvc toDisplayPlace:(NSDictionary *)place
+{
+    pvc.place = place;
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([sender isKindOfClass:[UITableViewCell class]]) {
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+        if (indexPath) {
+            if ([segue.identifier isEqualToString:@"Select Place"]) {
+                if ([segue.destinationViewController isKindOfClass:[PlaceFlickrPhotosTVC class]]) {
+                    NSDictionary *place = [self placeForRowAtIndexPath:indexPath];
+                    [self preparePlaceTableViewController:segue.destinationViewController toDisplayPlace:place  ];
+                }
+            }
+        }
+    }
 }
-*/
+
 
 @end

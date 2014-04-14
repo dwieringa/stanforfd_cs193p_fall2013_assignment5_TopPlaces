@@ -24,6 +24,9 @@
 		55D578F018F72D470022CD99 /* FlickrFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578EF18F72D470022CD99 /* FlickrFetcher.m */; };
 		55D578F318F72F240022CD99 /* FlickrPlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578F218F72F240022CD99 /* FlickrPlacesTVC.m */; };
 		55D578F618F730E20022CD99 /* TopFlickrPlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578F518F730E20022CD99 /* TopFlickrPlacesTVC.m */; };
+		55D578F918FC2F920022CD99 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578F818FC2F920022CD99 /* ImageViewController.m */; };
+		55D578FC18FC3A920022CD99 /* FlickrPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578FB18FC3A920022CD99 /* FlickrPhotosTVC.m */; };
+		55D578FF18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D578FE18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +65,12 @@
 		55D578F218F72F240022CD99 /* FlickrPlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPlacesTVC.m; sourceTree = "<group>"; };
 		55D578F418F730E20022CD99 /* TopFlickrPlacesTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopFlickrPlacesTVC.h; sourceTree = "<group>"; };
 		55D578F518F730E20022CD99 /* TopFlickrPlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopFlickrPlacesTVC.m; sourceTree = "<group>"; };
+		55D578F718FC2F920022CD99 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		55D578F818FC2F920022CD99 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		55D578FA18FC3A920022CD99 /* FlickrPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrPhotosTVC.h; sourceTree = "<group>"; };
+		55D578FB18FC3A920022CD99 /* FlickrPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrPhotosTVC.m; sourceTree = "<group>"; };
+		55D578FD18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceFlickrPhotosTVC.h; sourceTree = "<group>"; };
+		55D578FE18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceFlickrPhotosTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,11 +131,17 @@
 			isa = PBXGroup;
 			children = (
 				55D578C618F72CF60022CD99 /* Main_iPhone.storyboard */,
+				55D578FA18FC3A920022CD99 /* FlickrPhotosTVC.h */,
+				55D578FB18FC3A920022CD99 /* FlickrPhotosTVC.m */,
+				55D578FD18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.h */,
+				55D578FE18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.m */,
+				55D578C918F72CF60022CD99 /* Main_iPad.storyboard */,
 				55D578F118F72F240022CD99 /* FlickrPlacesTVC.h */,
 				55D578F218F72F240022CD99 /* FlickrPlacesTVC.m */,
 				55D578F418F730E20022CD99 /* TopFlickrPlacesTVC.h */,
 				55D578F518F730E20022CD99 /* TopFlickrPlacesTVC.m */,
-				55D578C918F72CF60022CD99 /* Main_iPad.storyboard */,
+				55D578F718FC2F920022CD99 /* ImageViewController.h */,
+				55D578F818FC2F920022CD99 /* ImageViewController.m */,
 				55D578EC18F72D460022CD99 /* Flickr Fetcher */,
 				55D578CF18F72CF60022CD99 /* Images.xcassets */,
 				55D578BB18F72CF60022CD99 /* Supporting Files */,
@@ -274,8 +289,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55D578F918FC2F920022CD99 /* ImageViewController.m in Sources */,
 				55D578C518F72CF60022CD99 /* TopPlacesAppDelegate.m in Sources */,
 				55D578F618F730E20022CD99 /* TopFlickrPlacesTVC.m in Sources */,
+				55D578FF18FC3BDA0022CD99 /* PlaceFlickrPhotosTVC.m in Sources */,
+				55D578FC18FC3A920022CD99 /* FlickrPhotosTVC.m in Sources */,
 				55D578F018F72D470022CD99 /* FlickrFetcher.m in Sources */,
 				55D578C118F72CF60022CD99 /* main.m in Sources */,
 				55D578F318F72F240022CD99 /* FlickrPlacesTVC.m in Sources */,

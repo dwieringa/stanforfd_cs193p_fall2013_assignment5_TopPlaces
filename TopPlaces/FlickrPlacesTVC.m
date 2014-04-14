@@ -15,16 +15,48 @@
 
 @implementation FlickrPlacesTVC
 
-- (void)setPlacesByCountry:(NSDictionary *)placesByCountry
+- (void)setPlaces:(NSArray *)places
 {
+    NSMutableArray *countries = [[NSMutableArray alloc] init];
+    NSMutableDictionary *placesByCountry = [[NSMutableDictionary alloc] init];
+    for (NSDictionary *placeX in places) {
+        NSMutableDictionary *place = [placeX mutableCopy];
+        NSArray *locationParts = [[place valueForKeyPath:FLICKR_PLACE_NAME] componentsSeparatedByString:@","];
+        NSString *country = locationParts[locationParts.count-1];
+        NSString *middlePart = @"";
+        if (locationParts.count == 3) {
+            middlePart = locationParts[1];
+        }
+        place[@"title"] = locationParts[0];
+        place[@"subtitle"] = middlePart;
+        NSMutableArray *placesInCountry = [placesByCountry objectForKey:country];
+        if (placesInCountry == nil) {
+            [countries addObject:country];
+            placesInCountry = [[NSMutableArray alloc] init];
+        }
+        [placesInCountry addObject:place];
+        placesByCountry[country] = placesInCountry;
+    }
+    _countries = [countries sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    //sort places within countries
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"title"  ascending:YES];
+    for (NSString *country in countries) {
+        //placesByCountry[country] = [ sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        NSArray *places = placesByCountry[country];
+        placesByCountry[country] = [places sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+        //recent = [stories copy];
+    }
     _placesByCountry = placesByCountry;
     [self.tableView reloadData];
 }
 
-- (void)setCountries:(NSArray *)countries
+- (NSDictionary *)placeForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _countries = countries;
-    [self.tableView reloadData];
+    NSString *country = self.countries[indexPath.section];
+    NSArray *placesInCountry = self.placesByCountry[country];
+    NSDictionary *place = placesInCountry[indexPath.row];
+    return place;
 }
 
 #pragma mark - UITableViewDataSource
@@ -50,9 +82,7 @@
                                                             forIndexPath:indexPath];
     
     // Configure the cell...
-    NSString *country = self.countries[indexPath.section];
-    NSArray *placesInCountry = self.placesByCountry[country];
-    NSDictionary *place = placesInCountry[indexPath.row];
+    NSDictionary *place = [self placeForRowAtIndexPath:indexPath];
     cell.textLabel.text = [place valueForKeyPath:@"title"];
     cell.detailTextLabel.text = [place valueForKeyPath:@"subtitle"];
     return cell;
@@ -62,44 +92,6 @@
 {
     return self.countries[section];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 /*
 #pragma mark - Navigation
