@@ -8,7 +8,7 @@
 
 #import "ImageViewController.h"
 
-@interface ImageViewController () <UIScrollViewDelegate>
+@interface ImageViewController () <UIScrollViewDelegate, UISplitViewControllerDelegate>
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *image;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -56,6 +56,7 @@
 
 - (void)setImage:(UIImage *)image
 {
+    self.scrollView.zoomScale = 1.0;
     self.imageView.image = image; // does not change the frame of the UIImageView
     [self.imageView sizeToFit];   // update the frame of the UIImageView
 
@@ -146,6 +147,46 @@
         }];
         [task resume]; // don't forget that all NSURLSession tasks start out suspended!
     }
+}
+
+#pragma mark - UISplitViewControllerDelegate
+
+- (void)awakeFromNib
+{
+    self.splitViewController.delegate = self;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc
+   shouldHideViewController:(UIViewController *)vc
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    if (self.image) {
+        return UIInterfaceOrientationIsPortrait(orientation);
+    }
+    return NO;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willHideViewController:(UIViewController *)aViewController
+          withBarButtonItem:(UIBarButtonItem *)barButtonItem
+       forPopoverController:(UIPopoverController *)pc
+{
+    barButtonItem.title = aViewController.title;
+    if ([aViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tbc = (UITabBarController *)aViewController;
+        UINavigationController *nc = (UINavigationController *)tbc.selectedViewController;
+        if ([nc.visibleViewController.title length] > 0) {
+            barButtonItem.title = nc.visibleViewController.title;
+        }
+    }
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willShowViewController:(UIViewController *)aViewController
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    self.navigationItem.leftBarButtonItem = nil;
 }
 
 @end
